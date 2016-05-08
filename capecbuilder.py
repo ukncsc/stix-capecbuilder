@@ -77,6 +77,19 @@ def _get_attack(attackid):
     return ret
 
 
+def _buildttp(data):
+    ttp = TTP()
+    ttp.title = data['name']
+    ttp.description = data['description']
+    attack_pattern = AttackPattern()
+    attack_pattern.capec_id = "CAPEC-" + str(data['id'])
+    attack_pattern.title = data['name']
+    attack_pattern.description = data['description']
+    ttp.behavior = Behavior()
+    ttp.behavior.add_attack_pattern(attack_pattern)
+    return ttp
+
+
 def capecbuild(capecid):
     """Do some TTP stuff."""
     data = _get_attack(capecid)
@@ -95,20 +108,9 @@ def capecbuild(capecid):
         pkg.stix_header = STIXHeader()
         pkg = STIXPackage()
         pkg.stix_header = STIXHeader()
-
         pkg.stix_header.handling = _marking()
-        ttp = TTP()
-        ttp.title = data['name']
-        # The summary key is a list. In 1.2 this is represented
-        # properly using description ordinality.
-        ttp.description = data['description']
-        attack_pattern = AttackPattern()
-        attack_pattern.capec_id = "CAPEC-" + str(data['id'])
-        attack_pattern.title = data['name']
-        attack_pattern.description = data['description']
-        ttp.behavior = Behavior()
-        ttp.behavior.add_attack_pattern(attack_pattern)
-        pkg.add_ttp(ttp)
+
+        pkg.add_ttp(_buildttp(data))
     return pkg.to_xml()
 
 
