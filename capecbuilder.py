@@ -91,7 +91,7 @@ def _buildttp(data):
 
 
 def capecbuild(capecid):
-    """Do some TTP stuff."""
+    """Build a STIX package based on a CAPEC ID"""
     data = _get_attack(capecid)
     if data:
         try:
