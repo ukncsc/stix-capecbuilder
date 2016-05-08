@@ -67,7 +67,7 @@ def _get_attack(attackid):
                 if hasattr(attack, "Related_Attack_Patterns"):
                     for r_attack in attack.Related_Attack_Patterns.getchildren():
                         record["related_attacks"].append(
-                            (int(r_attack.Relationship_Target_ID.text), r_attack.Relationship_Nature.text))
+                            (int(r_attack.Relationship_Target_ID.text)))
 
                 if hasattr(attack, "Attack_Prerequisites"):
                     for a_requ in attack.Attack_Prerequisites.getchildren():
@@ -110,10 +110,14 @@ def capecbuild(capecid):
         pkg.stix_header = STIXHeader()
         pkg.stix_header.handling = _marking()
 
-        pkg.add_ttp(_buildttp(data))
+        ttp = _buildttp(data)
+
+        if data['related_attacks']:
+            ttp.related_ttps.append(
+                _buildttp(_get_attack(str(data['related_attacks'][0]))))
+        pkg.add_ttp(ttp)
     return pkg.to_xml()
 
 
 if __name__ == '__main__':
-    # print json.dumps(_get_attack(sys.argv[1]), indent=2)
     print capecbuild(sys.argv[1])
