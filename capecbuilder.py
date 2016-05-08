@@ -1,3 +1,10 @@
+"""
+Builds a STIX TTP from a CAPEC number.
+
+This script will take a CAPEC ID and transform it into a
+STIX TTP object. Work in progress.
+"""
+
 import json
 import sys
 
