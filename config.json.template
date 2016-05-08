@@ -1,3 +1,9 @@
 {
-  "capec-file": "capec.xml"
+  "capec-file": "capec_2-8.xml",
+  "stix": [
+    {
+      "ns": "http://example.com",
+      "ns_prefix": "example"
+    }
+  ]
 }
