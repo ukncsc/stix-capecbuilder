@@ -9,7 +9,7 @@ import json
 import sys
 
 from lxml import objectify
-from stix.common import Confidence, Identity, InformationSource
+from stix.common import Identity, InformationSource
 from stix.core import STIXHeader, STIXPackage
 from stix.data_marking import Marking, MarkingSpecification
 from stix.extensions.marking.simple_marking import SimpleMarkingStructure
