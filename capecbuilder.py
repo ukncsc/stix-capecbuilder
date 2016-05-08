@@ -9,6 +9,7 @@ import json
 import sys
 
 from lxml import objectify
+from stix.common import Confidence, Identity, InformationSource
 from stix.core import STIXHeader, STIXPackage
 from stix.data_marking import Marking, MarkingSpecification
 from stix.extensions.marking.simple_marking import SimpleMarkingStructure
@@ -63,11 +64,18 @@ def _get_attack(attackid):
                     "description": _get_description(attack),
                     "related_attacks": [],
                     "attack_prerequisites": [],
+                    "references": [],
                 }
                 if hasattr(attack, "Related_Attack_Patterns"):
                     for r_attack in attack.Related_Attack_Patterns.getchildren():
                         record["related_attacks"].append(
                             (int(r_attack.Relationship_Target_ID.text)))
+
+                if hasattr(attack, "References"):
+                    for ref in attack.References.getchildren():
+                        if hasattr(ref, "Reference_Link"):
+                            record["references"].append(
+                                ref.Reference_Link.text)
 
                 if hasattr(attack, "Attack_Prerequisites"):
                     for a_requ in attack.Attack_Prerequisites.getchildren():
@@ -87,6 +95,10 @@ def _buildttp(data):
     attack_pattern.description = data['description']
     ttp.behavior = Behavior()
     ttp.behavior.add_attack_pattern(attack_pattern)
+    ttp.information_source = InformationSource()
+    ttp.information_source.identity = Identity()
+    ttp.information_source.identity.name = "The MITRE Corporation"
+    ttp.information_source.references = data['references']
     return ttp
 
 
