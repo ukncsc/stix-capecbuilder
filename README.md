@@ -21,15 +21,36 @@ Before using this script you will need to setup the configuration file with your
 
 Once setup your file should look like this:
 
+```JSON
 {
   "capec-file": "capec_2-8.xml",
+  "ingest": [
+    {
+      "active": false,
+      "endpoint": "http://kb.avengers,com/adapter/certuk_mod/import/",
+      "user": "bot"
+    }
+  ],
   "stix": [
     {
       "ns": "http://avengers.com",
       "ns_prefix": "avengers"
     }
+  ],
+  "taxii": [
+    {
+      "active": false,
+      "binding": "urn:stix.mitre.org:xml:1.1.1",
+      "discovery_path": "/taxii-discovery-service",
+      "host": "kb.avengers.com",
+      "inbox_path": "/taxii-data",
+      "password": "password",
+      "ssl": false,
+      "username": "username"
+    }
   ]
 }
+```
 
 ## Usage
 From a terminal/command prompt your can specify the CAPEC ID as the argument to build a TTP based on that CAPEC.
@@ -39,4 +60,4 @@ $ python capecbuilder.py 202
 ```
 
 ## Example Output
-An example output can be found in the [Example](Example-Package-7cbc9064) file. This examples uses CAPEC 202.
+An example output can be found in the [Example](Example-Package-c4b7c3c3-4c78-4eda-8715-1f00aa48d918.xml) file. This examples uses CAPEC 202.
