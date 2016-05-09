@@ -1,0 +1,65 @@
+<stix:STIX_Package 
+	xmlns:avengers="http://avengers.com"
+	xmlns:cybox="http://cybox.mitre.org/cybox-2"
+	xmlns:cyboxCommon="http://cybox.mitre.org/common-2"
+	xmlns:cyboxVocabs="http://cybox.mitre.org/default_vocabularies-2"
+	xmlns:marking="http://data-marking.mitre.org/Marking-1"
+	xmlns:simpleMarking="http://data-marking.mitre.org/extensions/MarkingStructure#Simple-1"
+	xmlns:stix="http://stix.mitre.org/stix-1"
+	xmlns:stixCommon="http://stix.mitre.org/common-1"
+	xmlns:stixVocabs="http://stix.mitre.org/default_vocabularies-1"
+	xmlns:tlpMarking="http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1"
+	xmlns:ttp="http://stix.mitre.org/TTP-1"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="avengers:Package-c4b7c3c3-4c78-4eda-8715-1f00aa48d918" version="1.2">
+    <stix:STIX_Header>
+        <stix:Handling>
+            <marking:Marking>
+                <marking:Controlled_Structure>../../../../descendant-or-self::node() | ../../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type='tlpMarking:TLPMarkingStructureType' color="WHITE"/>
+                <marking:Marking_Structure xsi:type='simpleMarking:SimpleMarkingStructureType'>
+                    <simpleMarking:Statement>This information may be distributed without restriction.</simpleMarking:Statement>
+                </marking:Marking_Structure>
+            </marking:Marking>
+        </stix:Handling>
+    </stix:STIX_Header>
+    <stix:TTPs>
+        <stix:TTP id="avengers:ttp-a2e4a01c-5c1f-4830-bfc1-772df481785e" timestamp="2016-05-09T08:04:28.371000+00:00" xsi:type='ttp:TTPType'>
+            <ttp:Title>Create Malicious Client</ttp:Title>
+            <ttp:Description>An adversary creates a client application to interface with a target service where the client violates assumptions the service makes about clients. Services that have designated client applications (as opposed to services that use general client applications, such as IMAP or POP mail servers which can interact with any IMAP or POP client) may assume that the client will follow specific procedures. For example, servers may assume that clients will accurately compute values (such as prices), will send correctly structured messages, and will attempt to ensure efficient interactions with the server. By reverse-engineering a client and creating their own version, an adversary can take advantage of these assumptions to abuse service functionality. For example, a purchasing service might send a unit price to its client and expect the client to correctly compute the total cost of a purchase. If the adversary uses a malicious client, however, the adversary could ignore the server input and declare any total price. Likewise, an adversary could configure the client to retain network or other server resources for longer than legitimately necessary in order to degrade server performance.</ttp:Description>
+            <ttp:Behavior>
+                <ttp:Attack_Patterns>
+                    <ttp:Attack_Pattern capec_id="CAPEC-202">
+                        <ttp:Title>Create Malicious Client</ttp:Title>
+                        <ttp:Description>An adversary creates a client application to interface with a target service where the client violates assumptions the service makes about clients. Services that have designated client applications (as opposed to services that use general client applications, such as IMAP or POP mail servers which can interact with any IMAP or POP client) may assume that the client will follow specific procedures. For example, servers may assume that clients will accurately compute values (such as prices), will send correctly structured messages, and will attempt to ensure efficient interactions with the server. By reverse-engineering a client and creating their own version, an adversary can take advantage of these assumptions to abuse service functionality. For example, a purchasing service might send a unit price to its client and expect the client to correctly compute the total cost of a purchase. If the adversary uses a malicious client, however, the adversary could ignore the server input and declare any total price. Likewise, an adversary could configure the client to retain network or other server resources for longer than legitimately necessary in order to degrade server performance.</ttp:Description>
+                    </ttp:Attack_Pattern>
+                </ttp:Attack_Patterns>
+            </ttp:Behavior>
+            <ttp:Related_TTPs>
+                <ttp:Related_TTP>
+                    <stixCommon:TTP id="avengers:ttp-c5ce4596-071c-477b-abec-615320424181" timestamp="2016-05-09T08:04:28.566000+00:00" xsi:type='ttp:TTPType'>
+                        <ttp:Title>Exploiting Trust in Client</ttp:Title>
+                        <ttp:Description>An attack of this type exploits vulnerabilities in client/server communication channel authentication and data integrity. It leverages the implicit trust a server places in the client, or more importantly, that which the server believes is the client. An attacker executes this type of attack by placing themselves in the communication channel between client and server such that communication directly to the server is possible where the server believes it is communicating only with a valid client. There are numerous variations of this type of attack.</ttp:Description>
+                        <ttp:Behavior>
+                            <ttp:Attack_Patterns>
+                                <ttp:Attack_Pattern capec_id="CAPEC-22">
+                                    <ttp:Title>Exploiting Trust in Client</ttp:Title>
+                                    <ttp:Description>An attack of this type exploits vulnerabilities in client/server communication channel authentication and data integrity. It leverages the implicit trust a server places in the client, or more importantly, that which the server believes is the client. An attacker executes this type of attack by placing themselves in the communication channel between client and server such that communication directly to the server is possible where the server believes it is communicating only with a valid client. There are numerous variations of this type of attack.</ttp:Description>
+                                </ttp:Attack_Pattern>
+                            </ttp:Attack_Patterns>
+                        </ttp:Behavior>
+                        <ttp:Information_Source>
+                            <stixCommon:Identity>
+                                <stixCommon:Name>The MITRE Corporation</stixCommon:Name>
+                            </stixCommon:Identity>
+                        </ttp:Information_Source>
+                    </stixCommon:TTP>
+                </ttp:Related_TTP>
+            </ttp:Related_TTPs>
+            <ttp:Information_Source>
+                <stixCommon:Identity>
+                    <stixCommon:Name>The MITRE Corporation</stixCommon:Name>
+                </stixCommon:Identity>
+            </ttp:Information_Source>
+        </stix:TTP>
+    </stix:TTPs>
+</stix:STIX_Package>

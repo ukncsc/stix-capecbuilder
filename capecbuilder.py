@@ -8,6 +8,8 @@ STIX TTP object. Work in progress.
 import json
 import sys
 
+import requests
+from cabby import create_client
 from lxml import objectify
 from stix.common import Identity, InformationSource
 from stix.core import STIXHeader, STIXPackage
@@ -85,6 +87,53 @@ def _get_attack(attackid):
     return ret
 
 
+def _inbox_package(endpoint_url, stix_package):
+    """Inbox the package to the adapter."""
+    data = stix_package
+    headers = _construct_headers()
+    response = requests.post(endpoint_url, data=data, headers=headers)
+    print(json.dumps(response.json(), indent=4))
+    return
+
+
+def _taxii(content):
+    client = create_client(CONFIG['taxii'][0]['host'], use_https=CONFIG['taxii'][0][
+                           'ssl'], discovery_path=CONFIG['taxii'][0]['discovery_path'])
+    content = content
+    binding = CONFIG['taxii'][0]['binding']
+    client.set_auth(username=CONFIG['taxii'][0][
+                    'username'], password=CONFIG['taxii'][0]['password'])
+    client.push(content, binding, uri=CONFIG['taxii'][0]['inbox_path'])
+
+
+def _construct_headers():
+    headers = {
+        'Content-Type': 'application/xml',
+        'Accept': 'application/json'
+    }
+    return headers
+
+
+def _postconstruct(xml, title):
+    if CONFIG['ingest'][0]['active'] == True:
+        try:
+            _inbox_package(CONFIG['ingest'][0]['endpoint'] +
+                           CONFIG['ingest'][0]['user'], xml)
+            print("[+] Successfully ingested " + title)
+        except ValueError:
+            print("[+] Failed ingestion for " + title)
+    elif CONFIG['taxii'][0]['active'] == True:
+        try:
+            _taxii(xml)
+            print("[+] Successfully inboxed " + title)
+        except requests.exceptions.ConnectionError:
+            print("[+] Failed inbox for " + title)
+    else:
+        with open(title + ".xml", "w") as text_file:
+            text_file.write(xml)
+        print("[+] Successfully generated " + title)
+
+
 def _buildttp(data):
     ttp = TTP()
     ttp.title = data['name']
@@ -128,8 +177,12 @@ def capecbuild(capecid):
             ttp.related_ttps.append(
                 _buildttp(_get_attack(str(data['related_attacks'][0]))))
         pkg.add_ttp(ttp)
-    return pkg.to_xml()
+        xml = pkg.to_xml()
+        title = pkg.id_.split(':', 1)[-1]
+        if __name__ == '__main__':
+            _postconstruct(xml, title)
+    return xml
 
 
 if __name__ == '__main__':
-    print capecbuild(sys.argv[1])
+    capecbuild(sys.argv[1])
