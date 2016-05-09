@@ -9,6 +9,7 @@ import json
 import sys
 
 import requests
+from cabby import create_client
 from lxml import objectify
 from stix.common import Identity, InformationSource
 from stix.core import STIXHeader, STIXPackage
@@ -17,8 +18,6 @@ from stix.extensions.marking.simple_marking import SimpleMarkingStructure
 from stix.extensions.marking.tlp import TLPMarkingStructure
 from stix.ttp import TTP, Behavior
 from stix.ttp.behavior import AttackPattern
-
-from cabby import create_client
 
 with open('config.json') as data_file:
     CONFIG = json.load(data_file)
@@ -105,6 +104,14 @@ def _taxii(content):
     client.set_auth(username=CONFIG['taxii'][0][
                     'username'], password=CONFIG['taxii'][0]['password'])
     client.push(content, binding, uri=CONFIG['taxii'][0]['inbox_path'])
+
+
+def _construct_headers():
+    headers = {
+        'Content-Type': 'application/xml',
+        'Accept': 'application/json'
+    }
+    return headers
 
 
 def _postconstruct(xml, title):
