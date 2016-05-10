@@ -8,8 +8,6 @@ STIX TTP object. Work in progress.
 import json
 import sys
 
-import requests
-from cabby import create_client
 from lxml import objectify
 from stix.common import Identity, InformationSource
 from stix.core import STIXHeader, STIXPackage
@@ -18,6 +16,9 @@ from stix.extensions.marking.simple_marking import SimpleMarkingStructure
 from stix.extensions.marking.tlp import TLPMarkingStructure
 from stix.ttp import TTP, Behavior
 from stix.ttp.behavior import AttackPattern
+
+import common.ingest as ingest
+import common.taxii as taxii
 
 with open('config.json') as data_file:
     CONFIG = json.load(data_file)
@@ -87,44 +88,23 @@ def _get_attack(attackid):
     return ret
 
 
-def _inbox_package(endpoint_url, stix_package):
-    """Inbox the package to the adapter."""
-    data = stix_package
-    headers = _construct_headers()
-    response = requests.post(endpoint_url, data=data, headers=headers)
-    print(json.dumps(response.json(), indent=4))
-    return
-
-
-def _taxii(content):
-    client = create_client(CONFIG['taxii'][0]['host'], use_https=CONFIG['taxii'][0][
-                           'ssl'], discovery_path=CONFIG['taxii'][0]['discovery_path'])
-    content = content
-    binding = CONFIG['taxii'][0]['binding']
-    client.set_auth(username=CONFIG['taxii'][0][
-                    'username'], password=CONFIG['taxii'][0]['password'])
-    client.push(content, binding, uri=CONFIG['taxii'][0]['inbox_path'])
-
-
-def _construct_headers():
-    headers = {
-        'Content-Type': 'application/xml',
-        'Accept': 'application/json'
-    }
-    return headers
-
-
 def _postconstruct(xml, title):
     if CONFIG['ingest'][0]['active'] == True:
         try:
-            _inbox_package(CONFIG['ingest'][0]['endpoint'] +
-                           CONFIG['ingest'][0]['user'], xml)
+            ingest.inbox_package(CONFIG['ingest'][0]['endpoint'] +
+                                 CONFIG['ingest'][0]['user'], xml)
             print("[+] Successfully ingested " + title)
         except ValueError:
             print("[+] Failed ingestion for " + title)
     elif CONFIG['taxii'][0]['active'] == True:
         try:
-            _taxii(xml)
+            taxii.taxii(xml, CONFIG['taxii'][0]['host'],
+                        CONFIG['taxii'][0]['ssl'], CONFIG[
+                'taxii'][0]['discovery_path'],
+                CONFIG['taxii'][0]['binding'], CONFIG[
+                'taxii'][0]['username'],
+                CONFIG['taxii'][0]['password'],
+                CONFIG['taxii'][0]['inbox_path'])
             print("[+] Successfully inboxed " + title)
         except requests.exceptions.ConnectionError:
             print("[+] Failed inbox for " + title)
