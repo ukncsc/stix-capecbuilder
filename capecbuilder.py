@@ -8,6 +8,7 @@ STIX TTP object. Work in progress.
 import json
 import sys
 
+import requests
 from lxml import objectify
 from stix.common import Identity, InformationSource
 from stix.core import STIXHeader, STIXPackage
