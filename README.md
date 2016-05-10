@@ -12,6 +12,12 @@ This script will looks at the first argument given to the script as a CAPCE ID a
 * Information Source
 
 ## Setup
+To install the script you can clone the repository using `git clone` once done you will need to enable the common submodule by:
+
+1. `git submodule init`
+2. `git submodule update`
+
+
 Before using this script you will need to setup the configuration file with your own settings:
 
 1. Make a copy of the `config.json.template` file and rename it to `config.json`.
