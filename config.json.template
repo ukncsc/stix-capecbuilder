@@ -1,28 +1,22 @@
 {
-  "capec-file": "capec_2-8.xml",
-  "ingest": [
-    {
-      "active": false,
-      "endpoint": "http://edge.example.com/adapter/certuk_mod/import/",
-      "user": "username"
-    }
-  ],
-  "stix": [
-    {
-      "ns": "http://example.com",
-      "ns_prefix": "example"
-    }
-  ],
-  "taxii": [
-    {
-      "active": false,
-      "binding": "urn:stix.mitre.org:xml:1.1.1",
-      "discovery_path": "/taxii-discovery-service",
-      "host": "edge.example.com",
-      "inbox_path": "/taxii-data",
-      "password": "password",
-      "ssl": false,
-      "username": "username"
-    }
-  ]
+    "capec-file": "capec_2-8.xml",
+    "ingest": [{
+        "active": false,
+        "endpoint": "http://edge.example.com/adapter/certuk_mod/import/",
+        "user": "username"
+    }],
+    "stix": {
+        "ns": "http://example.com",
+        "ns_prefix": "example"
+    },
+    "taxii": [{
+        "active": false,
+        "binding": "urn:stix.mitre.org:xml:1.1.1",
+        "discovery_path": "/taxii-discovery-service",
+        "host": "edge.example.com",
+        "inbox_path": "/taxii-data",
+        "password": "password",
+        "ssl": false,
+        "username": "username"
+    }]
 }

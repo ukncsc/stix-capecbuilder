@@ -1,3 +1,0 @@
-[submodule "certuk-common"]
-	path = certuk-common
-	url = git@github.com:certuk/certuk-common.git
