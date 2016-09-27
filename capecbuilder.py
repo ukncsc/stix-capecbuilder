@@ -88,14 +88,14 @@ def _get_attack(attackid):
 
 
 def _postconstruct(xml, title):
-    if CONFIG['ingest'][0]['active'] == True:
+    if CONFIG['ingest'][0]['active']:
         try:
             _certuk_inbox(xml, CONFIG['ingest'][0]['endpoint'] +
                           CONFIG['ingest'][0]['user'])
             print("[+] Successfully ingested " + title)
         except ValueError:
             print("[+] Failed ingestion for " + title)
-    elif CONFIG['taxii'][0]['active'] == True:
+    elif CONFIG['taxii'][0]['active']:
         try:
             _taxii_inbox(xml, CONFIG['taxii'][0])
             print("[+] Successfully inboxed " + title)
