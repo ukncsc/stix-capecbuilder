@@ -22,8 +22,8 @@ from stix.ttp.behavior import AttackPattern
 with open('config.json') as data_file:
     CONFIG = json.load(data_file)
 
-NS_PREFIX = CONFIG['stix'][0]['ns_prefix']
-NS = CONFIG['stix'][0]['ns']
+NS_PREFIX = CONFIG['stix']['ns_prefix']
+NS = CONFIG['stix']['ns']
 HNDL_ST = "This information may be distributed without restriction."
 
 
