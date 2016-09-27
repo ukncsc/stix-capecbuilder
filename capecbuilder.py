@@ -9,6 +9,7 @@ import json
 import sys
 
 import requests
+from functions import _certuk_inbox, _taxii_inbox
 from lxml import objectify
 from stix.common import Identity, InformationSource
 from stix.core import STIXHeader, STIXPackage
@@ -17,9 +18,6 @@ from stix.extensions.marking.simple_marking import SimpleMarkingStructure
 from stix.extensions.marking.tlp import TLPMarkingStructure
 from stix.ttp import TTP, Behavior
 from stix.ttp.behavior import AttackPattern
-
-import common.ingest as ingest
-import common.taxii as taxii
 
 with open('config.json') as data_file:
     CONFIG = json.load(data_file)
@@ -92,20 +90,14 @@ def _get_attack(attackid):
 def _postconstruct(xml, title):
     if CONFIG['ingest'][0]['active'] == True:
         try:
-            ingest.inbox_package(CONFIG['ingest'][0]['endpoint'] +
-                                 CONFIG['ingest'][0]['user'], xml)
+            _certuk_inbox(xml, CONFIG['ingest'][0]['endpoint'] +
+                          CONFIG['ingest'][0]['user'])
             print("[+] Successfully ingested " + title)
         except ValueError:
             print("[+] Failed ingestion for " + title)
     elif CONFIG['taxii'][0]['active'] == True:
         try:
-            taxii.taxii(xml, CONFIG['taxii'][0]['host'],
-                        CONFIG['taxii'][0]['ssl'], CONFIG[
-                'taxii'][0]['discovery_path'],
-                CONFIG['taxii'][0]['binding'], CONFIG[
-                'taxii'][0]['username'],
-                CONFIG['taxii'][0]['password'],
-                CONFIG['taxii'][0]['inbox_path'])
+            _taxii_inbox(xml, CONFIG['taxii'][0])
             print("[+] Successfully inboxed " + title)
         except requests.exceptions.ConnectionError:
             print("[+] Failed inbox for " + title)
@@ -141,10 +133,10 @@ def capecbuild(capecid):
             namespace = {NS: NS_PREFIX}
             set_id_namespace(namespace)
         except ImportError:
-            from stix.utils import idgen
+            from mixbox.idgen import set_id_namespace
             from mixbox.namespaces import Namespace
             namespace = Namespace(NS, NS_PREFIX, "")
-            idgen.set_id_namespace(namespace)
+            set_id_namespace(namespace)
 
         pkg = STIXPackage()
         pkg.stix_header = STIXHeader()
