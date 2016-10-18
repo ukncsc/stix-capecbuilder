@@ -1,4 +1,4 @@
-Copyright (c) 2016 Crown Copyright (CERT-UK)
+Copyright (c) 2016 Crown Copyright (NCSC)
 
 Permission is hereby granted, free of charge, to use, copy, modify, merge, distribute and/or sub-licence the software together with any associated documentation provided that it is solely for your own internal use and subject to the following conditions:
 
@@ -8,7 +8,7 @@ Permission is hereby granted, free of charge, to use, copy, modify, merge, distr
 
 # CAPEC-Builder
 
-[![Code Health](https://landscape.io/github/certuk/capec-builder/master/landscape.svg?style=flat)](https://landscape.io/github/certuk/capec-builder/master)
+[![Code Health](https://landscape.io/github/ncscuk/capec-builder/master/landscape.svg?style=flat)](https://landscape.io/github/ncsc/capec-builder/master)
 
 CAPEC Builder script that generates STIX TTP objects.
 
@@ -46,7 +46,7 @@ Once setup your file should look like this:
   "ingest": [
     {
       "active": false,
-      "endpoint": "http://kb.avengers,com/adapter/certuk_mod/import/",
+      "endpoint": "http://kb.avengers.com/adapter/certuk_mod/import/",
       "user": "bot"
     }
   ],
