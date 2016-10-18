@@ -2,7 +2,7 @@
 Provides common functions for the Capec-Builder script.
 
 The script provides functionality for both TAXII inboxing aswell as using
-CERT-UK's custom adapter inbox.
+NCSC's custom adapter inbox.
 """
 
 import json
